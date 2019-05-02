@@ -1,17 +1,21 @@
+#include<string.h>
 #define MAX 75
 void read_config(FILE *file, char *filename, char* arg[])
 {
     file = fopen(filename, "r");
-    char str[MAX];
     char s[MAX];
     int i = 0;
     while (!feof(file))
     {  
-        fscanf(file, "%s", s);
-        arg[i] = s;
-        i++;
-         printf("%s", s);
-         printf("\n");
+        fgets(s, MAX, file);
+        char* aux=calloc(sizeof(char),15);
+         for(int j=0;j<MAX;j++){
+             if(s[j]==' ')
+                 break;  
+             else
+            aux[j]=s[j];  
+         }
+         arg[i++] = aux;
     }
     fclose(file);
 }
