@@ -4,11 +4,11 @@
 #include <math.h>
 #include "read.c"
 int main(){
-        char** arg = calloc(sizeof(char*), 30);
+        char* arg[4];
         FILE *fp;
         char *filename = "config.txt";
         read_config(fp, filename, arg);
-        for(int i=0; i< 18; i++){
+        for(int i=0; i< 4; i++){
             printf("\n");
             printf("%s", arg[i]); 
             printf("\n");
