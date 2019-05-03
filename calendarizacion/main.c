@@ -3,15 +3,17 @@
 #include <unistd.h>
 #include <math.h>
 #include "read.c"
+#include"list.c"
+p* head=NULL;
 int main(){
         char* arg[4];
+        
         FILE *fp;
-        char *filename = "config.txt";
-        read_config(fp, filename, arg);
-        for(int i=0; i< 4; i++){
-            printf("\n");
-            printf("%s", arg[i]); 
-            printf("\n");
-        }
+        char *filename = "procesos.txt";
+        read_gen(fp, filename, &head);
+           for(p *l = head; l != NULL; l = l->next) {
+        printf("%d, %d, %d, %d\n", l->id,l->horallegada,l->duracion,l->tama);
+    }
+    
     return 0;
 }

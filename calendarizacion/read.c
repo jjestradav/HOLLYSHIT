@@ -1,4 +1,5 @@
-#include <string.h>
+#include"list.c"
+#include<string.h>
 #define MAX 75
 void read_config(FILE *file, char *filename, char *arg[])
 {
@@ -21,18 +22,28 @@ void read_config(FILE *file, char *filename, char *arg[])
     fclose(file);
 }
 
-void read_gen(FILE *file, char *filename, int *arreglo)
+void read_gen(FILE *file, char *filename, p**head)
 {
     file = fopen(filename, "r");
     char s[MAX];
     int i = 0;
+    int array[4];
+    int cant=0;
     while (!feof(file))
     {
-        fgets(s, MAX, file);
-        if (s[i] == "\t")
-            break;
+        
+        char aux[6];
+        fscanf(file,"%s",aux);
+        if(cant==3){
+            array[3]=atoi(aux);
+             push(head, array[0],array[1],array[2],array[3]);
+            cant=0;
+        }
         else
-            arreglo[i] = atoi(s);
+        array[cant++]=atoi(aux);
+        
+       
     }
     fclose(file);
 }
+
