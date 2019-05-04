@@ -17,7 +17,7 @@ typedef struct proceso
 } p;
 
 
-
+int cant; 
 void push(p** head, int id,int horallegada,int duracion,int tama)
 {
     p* current=*head;
@@ -31,6 +31,7 @@ void push(p** head, int id,int horallegada,int duracion,int tama)
 if (current == NULL)
 	{
 		*head = temp;
+        cant++;
 	}
 	else
 	{
@@ -38,6 +39,7 @@ if (current == NULL)
 			current = current->next;
 
 		current->next = temp;
+        cant++;
 	}
 }
 void pop(p* head)
@@ -58,6 +60,7 @@ void pop(p* head)
 
         free(head);
         head = NULL;
+        cant--;
         // printf("%d deleted from end successfully.\n", n);
         return;
     }
@@ -73,6 +76,7 @@ void pop(p* head)
     tam= t->tama;
     u->next = NULL;
     free(t);
+    cant--; 
     // printf("%d deleted from end successfully.\n", n);
 }
 
