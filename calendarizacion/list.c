@@ -110,8 +110,8 @@ void print_list(p **head)
     }
 }
 
-int isEmpty(p* head){
-    return(head==NULL ? 0:1);
+int isEmpty(p** head){
+    return((*head)==NULL ? 0:1);
 }
 
 #endif
