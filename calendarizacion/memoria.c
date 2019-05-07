@@ -66,6 +66,7 @@ void popM(bloque **head, int pos)
     }
     bloque *t = NULL;
     bloque* t2 = NULL;
+    bloque * t3= NULL;
     int cont = 0;
     t = (*head);
     while (t->next != NULL && cont <= pos)
@@ -77,11 +78,23 @@ void popM(bloque **head, int pos)
             t->duracion = 0;
             if (t->next->duracion == 0 && t2 != NULL)
             {
+
                 t->next->tama += t->tama;
                 t2->next = t->next;
                 t->next = NULL;
                 free(t);
                 cantMem--;
+                if(t3 != NULL){
+                    t2 = t2->next;
+                    t3 = t3->next;
+                    if(t3->duracion==0){
+                        t3->tama+=t2->tama;
+                        t3->next=t2->next;
+                        t2->next = NULL;
+                        free(t2);
+                        return;
+                    }
+                }
                 return;
             }
             if(t2 != NULL){
@@ -96,6 +109,7 @@ void popM(bloque **head, int pos)
             }
                 }
         }
+        t3 = t2;
         t2 = t;
         t = t->next;
         cont++;

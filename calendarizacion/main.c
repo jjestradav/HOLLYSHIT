@@ -19,16 +19,16 @@ int main()
     bloque* blo=NULL;
     pushM(&blo,1,40,2,&a);//[0]
     pushM(&blo,2,30,3,&a);//[1] 0
-    pushM(&blo,3,30,2,&a);//[2] 1 
-    pushM(&blo,4,30,2,&a);//[3] 2 1
-    pushM(&blo,5,30,4,&a);//[4] 3 2
-    pushM(&blo,6,30,5,&a);//[5] 4 3
-    pushM(&blo,7,30,2,&a);//[6] 5 4
+    pushM(&blo,3,30,2,&a);//[2] 1 0 
+    pushM(&blo,4,30,2,&a);//[3] 2 1 0
+    pushM(&blo,5,30,4,&a);//[4] 3 2 1 0
+    pushM(&blo,6,30,5,&a);//[5] 4 3 2 1 
+    pushM(&blo,7,30,2,&a);//[6] 5 4 3 2
 
     
     for (bloque *l = blo; l != NULL; l = l->next)
     {
-        printf("%d, %d, %d\n", l->id, l->tama, l->duracion);
+        printf("%d, %d, %d, %d\n", l->id, l->tama, l->duracion, cantMem);
     }
     printf("\n\n\n\n\n");
     popM(&blo,0);
@@ -40,7 +40,7 @@ int main()
    
 for (bloque *l = blo; l != NULL; l = l->next)
     {
-        printf("%d, %d, %d\n", l->id, l->tama, l->duracion);
+        printf("%d, %d, %d, %d\n", l->id, l->tama, l->duracion, cantMem);
     }
 
 
