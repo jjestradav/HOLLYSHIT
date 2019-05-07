@@ -1,10 +1,10 @@
-#ifndef LIST_C
-#define LIST_C
+#ifndef MEMORIA_C
+#define MEMORIA_C
 #include <stdio.h>
 #include <stdlib.h>
 
 typedef struct bloque bloque;
-void push(bloque **head, int id, int tama, int duracion);
+void push(bloque **head, int id, int tama, int duracion, int tamtotal);
 void pop(bloque **head, int pos);
 void print_list(bloque **head);
 
@@ -17,18 +17,25 @@ typedef struct bloque
 } bloque;
 
 int cant;
-void push(bloque **head, int id, int tama, int duracion)
+void push(bloque **head, int id, int tama, int duracion, int tamtotal)
 {
     bloque *current = *head;
     bloque *temp = (bloque *)malloc(sizeof(bloque));
     temp->id = id;
     temp->tama = tama;
+    temp->duracion = duracion;
     temp->next = NULL;
 
     if (current == NULL)
     {
+        bloque *temp2 = (bloque *)malloc(sizeof(bloque));
+        temp2->id = 0;
+        temp2->tama = tamtotal - temp->tama;
+        temp2->duracion = 0;
+        temp->next = temp2;
+        temp2->next = NULL;
         *head = temp;
-        cant++;
+        cant += 2;
     }
     else
     {
@@ -36,7 +43,13 @@ void push(bloque **head, int id, int tama, int duracion)
             current = current->next;
 
         current->next = temp;
-        cant++;
+        bloque *temp2 = (bloque *)malloc(sizeof(bloque));
+        temp2->id = 0;
+        temp2->tama = tamtotal - temp->tama;
+        temp2->duracion = 0;
+        temp->next = temp2;
+        temp2->next = NULL;
+        cant + 2;
     }
 }
 void pop(bloque **head, int pos)
@@ -45,20 +58,35 @@ void pop(bloque **head, int pos)
     {
         return;
     }
-    bloque *t, t2;
+    bloque *t, *t2;
     int cont = 0;
     t = (*head);
-    while (t != NULL)
+    while (t->next != NULL && pos < cont)
     {
         if (cont == pos)
         {
             t->id = 0;
             t->duracion = 0;
-            break;
+            if (t->next->duracion == 0)
+            {
+                t->next->tama += t->tama;
+                t2->next = t->next;
+                t->next = NULL;
+                free(t);
+            }
+            if (t2->duracion == 0)
+            {
+                t2->tama+=t->tama;
+                t2->next=t->next;
+                t->next=NULL;
+                free(t);
+            }
         }
+        t2 = t;
         t = t->next;
         cont++;
     }
+
 }
 void print_list(bloque **head)
 {
@@ -70,6 +98,9 @@ void print_list(bloque **head)
                current->tama);
         current = current->next;
     }
+}
+int isEmpty(bloque **head){
+    return ((*head)==NULL ? 0:1);
 }
 
 #endif
