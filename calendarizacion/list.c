@@ -5,8 +5,11 @@
 
 typedef struct proceso p;
 void push(p **head, int id, int duracion, int horallegada, int tama);
-void pop(p *head);
+void pop(p **head);
+void dequeue(p **head);
 void print_list(p **head);
+int isEmpty();
+
 typedef struct proceso
 {
     int id;
@@ -41,7 +44,7 @@ void push(p **head, int id, int horallegada, int duracion, int tama)
         cant++;
     }
 }
-void pop(p *head)
+void pop(p **head)
 {
     p *t, *u;
     int i, d, h, tam;
@@ -50,20 +53,20 @@ void pop(p *head)
         printf("Linked list is already empty.\n");
         return;
     }
-    if (head->next == NULL)
+    if ((*head)->next == NULL)
     {
-        i = head->id;
-        d = head->duracion;
-        h = head->horallegada;
-        tam = head->tama;
+        i = (*head)->id;
+        d = (*head)->duracion;
+        h = (*head)->horallegada;
+        tam = (*head)->tama;
 
-        free(head);
+        free(*head);
         head = NULL;
         cant--;
         // printf("%d deleted from end successfully.\n", n);
         return;
     }
-    t = head;
+    t = *head;
     while (t->next != NULL)
     {
         u = t;
@@ -78,7 +81,23 @@ void pop(p *head)
     cant--;
     // printf("%d deleted from end successfully.\n", n);
 }
+void dequeue(p **head){ 
+    if(head==NULL){
+        printf("vacia");
+        return;
+    }
+    p* t;
+    int a , b ,c ,d;
+    t=(*head);
+    (*head)=(*head)->next;
+    a = t->id;
+    b= t->duracion;
+    c= t->horallegada;
+    d= t->tama;
+    free(t);
+    t=NULL;
 
+}
 void print_list(p **head)
 {
     p *current = *head;
@@ -89,6 +108,10 @@ void print_list(p **head)
                current->tama);
         current = current->next;
     }
+}
+
+int isEmpty(p* head){
+    return(head==NULL ? 0:1);
 }
 
 #endif
