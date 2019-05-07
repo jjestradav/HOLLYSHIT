@@ -12,7 +12,7 @@ int main()
     char *arg[4];
 
     // FILE *fp;
-    // char *filename = "HOLLYSHIT/file.txt";
+    // char *filename = "/home/jose/Documents/HOLLYSHIT/file.txt";
     // read_gen(fp, filename, &head);
     FILE *f;
     char* name="config.txt";
