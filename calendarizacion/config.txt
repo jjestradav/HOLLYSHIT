@@ -1,4 +1,4 @@
 Secuencial  #modo
-30  #tipo de modo (best fit)
-3000    #bytes totales disponibles de memoria
+FIFO #tipo de modo
+800    #bytes totales disponibles de memoria
 Estado.tex  #nombre de archivo

@@ -9,6 +9,7 @@ void pop(p **head);
 void dequeue(p **head);
 void print_list(p **head);
 int isEmpty();
+p* last(p**head);
 
 typedef struct proceso
 {
@@ -46,40 +47,58 @@ void push(p **head, int id, int horallegada, int duracion, int tama)
 }
 void pop(p **head)
 {
-    p *t, *u;
-    int i, d, h, tam;
-    if (head == NULL)
-    {
-        printf("Linked list is already empty.\n");
-        return;
-    }
-    if ((*head)->next == NULL)
-    {
-        i = (*head)->id;
-        d = (*head)->duracion;
-        h = (*head)->horallegada;
-        tam = (*head)->tama;
 
-        free(*head);
-        head = NULL;
-        cant--;
-        // printf("%d deleted from end successfully.\n", n);
+    if((*head) == NULL)
         return;
-    }
-    t = *head;
-    while (t->next != NULL)
-    {
-        u = t;
-        t = t->next;
-    }
-    i = t->id;
-    d = t->duracion;
-    h = t->horallegada;
-    tam = t->tama;
-    u->next = NULL;
-    free(t);
-    cant--;
-    // printf("%d deleted from end successfully.\n", n);
+
+    p *front = (*head);
+    (*head) = (*head)->next;
+    front->next = NULL;
+
+    
+    if(front == (*head))
+        (*head)= NULL;
+
+    free(front);
+ 
+
+
+
+
+    // p *t, *u;
+    // int i, d, h, tam;
+    // if (head == NULL)
+    // {
+    //     printf("Linked list is already empty.\n");
+    //     return;
+    // }
+    // if ((*head)->next == NULL)
+    // {
+    //     i = (*head)->id;
+    //     d = (*head)->duracion;
+    //     h = (*head)->horallegada;
+    //     tam = (*head)->tama;
+
+    //     free(*head);
+    //     head = NULL;
+    //     cant--;
+    //     // printf("%d deleted from end successfully.\n", n);
+    //     return;
+    // }
+    // t = *head;
+    // while (t->next != NULL)
+    // {
+    //     u = t;
+    //     t = t->next;
+    // }
+    // i = t->id;
+    // d = t->duracion;
+    // h = t->horallegada;
+    // tam = t->tama;
+    // u->next = NULL;
+    // free(t);
+    // cant--;
+    // // printf("%d deleted from end successfully.\n", n);
 }
 void dequeue(p **head){ 
     if(head==NULL){
@@ -102,16 +121,29 @@ void print_list(p **head)
 {
     p *current = *head;
 
+printf("\n *********En Cola:**********\n");
     while (current != NULL)
     {
         printf("%d, %d, %d, %d\n", current->id, current->horallegada, current->duracion,
                current->tama);
         current = current->next;
     }
+    printf("\n ***********************\n");
 }
 
 int isEmpty(p** head){
     return((*head)==NULL ? 0:1);
 }
+
+p* last(p**head){
+     p* current=(*head);
+     while(current->next !=NULL)
+        current = current->next;
+
+        return current;
+}
+
+
+
 
 #endif
