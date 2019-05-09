@@ -311,12 +311,34 @@ bool buscaEspacio(bloque**head, int id, int duracion, int tam){
 void limpiaId(bloque **head){
 
      bloque * current = (*head);
-    while(current != NULL ){
+    while(current->next != NULL ){
         if(current->id != 0 && current->duracion==0 ){
             current->id=0;
         }
-        current->next;
+        current = current->next;
     }
 
 }
+
+void juntarBloques(bloque** head){
+
+bloque* current=(*head);
+bloque* aux1 =NULL;
+bloque* aux2=NULL;
+while(current != NULL){
+
+}
+}
+bool Terminado(bloque**head){
+   bloque* current=(*head);
+    while(current->next != NULL){
+        if(current->duracion == 0 && current->id > 0)
+            return true;
+
+            current=current->next;
+        }
+        return false;
+    }
+    
+//[] [] [] []->null
 #endif
