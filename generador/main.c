@@ -2,8 +2,12 @@
 #include <unistd.h>
 #include "poisson.c"
 #include "random.c"
+
+//time_t t;
+
 int main(int argc, char **argv)
 {
+    initialize();
     int np;     //numero de proceso
     int pid;    //id de proceso
     int memi;   // memoria minima
@@ -43,7 +47,6 @@ int main(int argc, char **argv)
             long double random= random_R();
             int proba = valorPoisson(random);
             hlli = hlli + proba;
-            sleep(1);
         }
         return 1;
     }

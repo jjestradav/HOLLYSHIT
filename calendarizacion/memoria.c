@@ -17,8 +17,7 @@ typedef struct bloque
     struct bloque *next;
 } bloque;
 
-
-    static int cantMem = 0;
+static int cantMem = 0;
 void pushM(bloque **head, int id, int tama, int duracion, int *tamtotal)
 {
     bloque *current = *head;
@@ -30,17 +29,17 @@ void pushM(bloque **head, int id, int tama, int duracion, int *tamtotal)
 
     if (current == NULL)
 
-        {
-            bloque *temp2 = (bloque *)malloc(sizeof(bloque));
-            temp2->id = 0;
-            temp2->tama = *tamtotal - temp->tama;
-            *tamtotal -= temp->tama;
-            temp2->duracion = 0;
-            temp->next = temp2;
-            temp2->next = NULL;
-            *head = temp;
-            cantMem += 2;
-        }
+    {
+        bloque *temp2 = (bloque *)malloc(sizeof(bloque));
+        temp2->id = 0;
+        temp2->tama = *tamtotal - temp->tama;
+        *tamtotal -= temp->tama;
+        temp2->duracion = 0;
+        temp->next = temp2;
+        temp2->next = NULL;
+        *head = temp;
+        cantMem += 2;
+    }
     else
     {
         bloque *aux = NULL;
