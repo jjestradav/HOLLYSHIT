@@ -18,6 +18,7 @@ void read_config(FILE *file, char *filename, char *arg[])
                 aux[j] = s[j];
         }
         arg[i++] = aux;
+        memset(&(s[0]), 0, MAX);
     }
     fclose(file);
 }
