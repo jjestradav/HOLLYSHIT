@@ -8,17 +8,25 @@ void FIFO(p** head,bloque** mem, int * memtotal);
 
 void FIFO(p** head, bloque** mem,int * memtotal){
 
-int tiempo=(*head)->horallegada;
+int tiempo = 0;
+bool finished=false;
 p* ult = last(head);
 int fin= ult->horallegada;
-bool finished=false;
 int cont=0;
-while(tiempo<=20){
-   printf("\n\n**********************\n\n"); 
+while(!finished){
+   printf("\n\nIter no.%d**********************\n\n",tiempo);
+      if(tiempo==9){
+          printf("\nHola\n");
+      } 
     if(isEmpty(head)!= 0 ){
-       if((*mem)!= NULL)
-           limpiaId(mem);
-       
+        //    print_list(head);
+        //     printf("\n");
+        //     print_listM(mem);
+         if(mem != NULL)
+                    juntarBloques(mem);
+  //print_list(head);
+            // printf("\n");
+            // print_listM(mem);
         if((*head)->tama <= *memtotal) {
             pushM(mem,(*head)->id,(*head)->tama,(*head)->duracion,memtotal);
               pop(head);
@@ -26,19 +34,21 @@ while(tiempo<=20){
         }
         else
         {
+         
           if(buscaEspacio(mem,(*head)->id,(*head)->duracion,(*head)->tama)){
+             // print_listM(mem);
               pop(head);
           }
+
              print_list(head);
+             //print_listM(mem);
         }
-         printf("\n\n**********************\n\n");        
+             
      }
 //else
-        if(isEmpty(head)== 0 && isEmptyM(mem)!= 0 && tiempo>(int)tiempo/2){
+        if(isEmpty(head)== 0 && isEmptyM(mem)!= 0){
+
              if(!Terminado(mem)){
-                 tiempo++;
-                restaDuracion(mem);
-                limpiaId(mem);
                 cont=0;
                 while(cont <= cantMem-1 && cantMem != 0){
                     if(verificaCero(mem)){
@@ -51,7 +61,14 @@ while(tiempo<=20){
 
                     cont++;
                 } 
-                 print_listM(mem);  
+                 
+                   tiempo++;
+                restaDuracion(mem);
+                limpiaId(mem);
+                if(mem != NULL)
+                    juntarBloques(mem);
+                 print_listM(mem); 
+
               continue;  
             }
             else
@@ -61,6 +78,8 @@ while(tiempo<=20){
 
         tiempo++;
         restaDuracion(mem);
+          if((*mem)!= NULL)
+           limpiaId(mem);
         cont=0;
         while(cont <= cantMem-1 && cantMem != 0){
             if(verificaCero(mem)){
@@ -72,7 +91,11 @@ while(tiempo<=20){
              break;
 
             cont++;
-        } 
+        }
+         //print_listM(mem);  
+  if(mem != NULL)
+        juntarBloques(mem);
+
  print_listM(mem);  
 
     }
