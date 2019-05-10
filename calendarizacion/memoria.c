@@ -23,8 +23,7 @@ typedef struct bloque
     struct bloque *next;
 } bloque;
 
-
-    static int cantMem = 0;
+static int cantMem = 0;
 void pushM(bloque **head, int id, int tama, int duracion, int *tamtotal)
 {
     bloque *current = *head;
