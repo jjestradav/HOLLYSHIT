@@ -8,7 +8,7 @@
 #include "list.c"
 #include "paginacion.c"
 #include "memoria.c"
-#include"secuencial.c"
+//#include"secuencial.c"
 
 int a=220;
 int main()
@@ -45,7 +45,7 @@ int main()
 
 
     FILE *fp;
-    char *filename = "/home/jonathan/Desktop/Sistemas Operativos/HOLLYSHIT/file.txt";
+    char *filename = "/home/jose/Documents/HOLLYSHIT/file.txt";
     read_gen(fp, filename, &head);
     // for (p *l = head; l != NULL; l = l->next)
     // {
@@ -76,7 +76,7 @@ int main()
             {
                 printf("Aqui!!!!\n");
                 int tamtotal=atoi(arg[2]);
-                     FIFO(&head,&blo,&tamtotal);
+                    //  FIFO(&head,&blo,&tamtotal);
                      //print_listM(&blo);
             }
             else
@@ -91,8 +91,8 @@ int main()
             }
         }
         else
-        if(arg[0]=="Paginacion"){
-            // paginacion(arg);
+        if(!strcmp(arg[0],"Paginacion")){
+            paginacion(arg , &head);
         }
     
 

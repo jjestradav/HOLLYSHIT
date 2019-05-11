@@ -1,4 +1,4 @@
-Secuencial  #modo
-FIFO #tipo de modo
-800    #bytes totales disponibles de memoria
+Paginacion  #modo
+4   #tipo de modo
+100 #bytes totales disponibles de memoria
 Estado.tex  #nombre de archivo
