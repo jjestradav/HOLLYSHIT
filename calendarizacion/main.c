@@ -66,28 +66,46 @@ int main()
 
     
     FILE *f;
+    FILE * tex;
     char* name="config.txt";
     read_config(f,name,arg);
+
+    char* str1="../";
+    char* str2= arg[3];
+    char * filename2 = (char *) malloc(1 + strlen(str1)+ strlen(str2) );
+    strcpy(filename2, str1);
+    strcat(filename2, str2);
+        printf("\n%s\n",filename2);
+    
 
         if (!strcmp(arg[0],"Secuencial"))
         {
             
             if (!strcmp(arg[1],"FIFO"))
             {
-                printf("Aqui!!!!\n");
+                tex=fopen(filename2,"w");
                 int tamtotal=atoi(arg[2]);
-                     FIFO(&head,&blo,&tamtotal);
-                     //print_listM(&blo);
+                int tamaOri=tamtotal;
+                FIFO(&head,&blo,&tamtotal,tex,filename2,tamaOri,"FIFO");
+                fclose(tex);
             }
             else
             if (!strcmp(arg[1],"BF"))
             {
-
+                tex=fopen(filename2,"w");
+                int tamtotal = atoi(arg[2]);
+                int tamaOri=tamtotal;
+                BestFit(&head, &blo,&tamtotal,tex ,filename2,tamaOri,"Best Fit");
+                fclose(tex);
             }
             else
             if (!strcmp(arg[1],"WF"))
             {
-
+                tex=fopen(filename2,"w");
+                int tamtotal = atoi(arg[2]);
+                int tamaOri=tamtotal;
+                WorstFit(&head, &blo, &tamtotal,tex ,filename2,tamaOri,"Worst Fit");
+                fclose(tex);
             }
         }
         else
