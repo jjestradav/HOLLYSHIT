@@ -12,6 +12,8 @@ void print_listM(bloque **head);
 void restaDuracion(bloque**head);
 bloque* remove_back(bloque** head);
 bloque* remove_front(bloque** head);
+bool Terminado(bloque**head);
+void juntarBloques(bloque** head);
 bloque* lastM(bloque**head);
 bool remove_any(bloque** head);
 void limpiaId(bloque **head);
@@ -460,26 +462,55 @@ void limpiaId(bloque **head){
 
 }
 
+    bool Terminado(bloque**head){
+      bloque* current=(*head);
+       while(current != NULL){
+            if(current->duracion > 0 && current->id > 0)
+                return false;
+
+            current=current->next;
+        }
+        return true;
+    }
+
 void juntarBloques(bloque** head){
+    if((*head) == NULL)
+        return;
+
+    if((*head)->next == NULL)
+        return;
+
+    if(Terminado(head)){
+        bloque* current = (*head)->next;
+        while(current != NULL){
+            (*head)->tama += current->tama;
+            //bloque* aux = current;
+            current = current->next;
+            //aux->next = NULL;
+            //free(aux);
+        }
+        (*head)->next = NULL;
+        return;
+    }
 
 if(cantMem<=1)
     return;
 int cont=0;
-if(cantMem==2){
-    if((*head)->next == NULL)
-        return;
+// if(cantMem==2){
+//     if((*head)->next == NULL)
+//         return;
 
-    if((*head)->id <= 0 && (*head)->next->id <=0){
-        (*head)->id=0;
-        (*head)->duracion=0;
-        (*head)->tama += (*head)->next->tama;
-        bloque* aux = (*head)->next;
-        (*head)->next=NULL;
-        free(aux);
-        cantMem--;
-        return;
-    }
-}
+//     if((*head)->id <= 0 && (*head)->next->id <=0){
+//         (*head)->id=0;
+//         (*head)->duracion=0;
+//         (*head)->tama += (*head)->next->tama;
+//         bloque* aux = (*head)->next;
+//         (*head)->next=NULL;
+//         free(aux);
+//         cantMem--;
+//         return;
+//     }
+// }
 bloque* current=(*head);
 bloque* aux1 =NULL;
 bloque* aux2=NULL;
@@ -514,23 +545,23 @@ if(current->next->id<=0 && current->id <= 0){
     free(aux2);
     cantMem--;
 }
-if(cantMem==1){
-    if(current->next == NULL)
-        return;
+// if(cantMem==1){
+//     if(current->next == NULL)
+//         return;
 
-      if((*head)->next->id<=0 && (*head)->id <= 0){
-          (*head)->id=0;
-          (*head)->tama += (*head)->next->tama;
-          aux1=NULL;
-          aux1=(*head)->next;
-          (*head)->next = NULL;
-          aux1->next=NULL;
-          free(aux1);
-          return;
-      }
-}
+//       if((*head)->next->id<=0 && (*head)->id <= 0){
+//           (*head)->id=0;
+//           (*head)->tama += (*head)->next->tama;
+//           aux1=NULL;
+//           aux1=(*head)->next;
+//           (*head)->next = NULL;
+//           aux1->next=NULL;
+//           free(aux1);
+//           return;
+//       }
+// }
 // if(current->next==NULL)
-//     break;
+//    break;
 aux1 = current;
 current = current->next;
 if(current==NULL)
@@ -546,16 +577,6 @@ cont++;
         return;
     }
 }
-    bool Terminado(bloque**head){
-      bloque* current=(*head);
-       while(current != NULL){
-            if(current->duracion > 0 && current->id > 0)
-                return false;
-
-            current=current->next;
-        }
-        return true;
-    }
 
   int retornaPosMBF(bloque** head, int tam){
       int aux = 0;
