@@ -10,7 +10,6 @@
 #include "memoria.c"
 #include"secuencial.c"
 
-int a=220;
 int main()
 {
     char *arg[4];
