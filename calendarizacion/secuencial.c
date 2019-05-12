@@ -39,14 +39,9 @@ while(!finished){
    printf("\n\nIter no.%d**********************\n\n",tiempo);
  
     if(isEmpty(head)!= 0 ){
-        //    print_list(head);
-        //     printf("\n");
-        //     print_listM(mem);
          if(mem != NULL)
                     juntarBloques(mem);
-  //print_list(head);
-            // printf("\n");
-            // print_listM(mem);
+
         if((*head)->tama <= currentSize) {
                  if((*head)->horallegada <= tiempo){
                  if(pushMem(mem,(*head)->id,(*head)->tama,(*head)->duracion,tamaOri,&currentSize))
@@ -83,19 +78,6 @@ while(!finished){
         if(isEmpty(head)== 0 && isEmptyM(mem)!= 0){
 
              if(!Terminado(mem)){
-                // cont=0;
-                // while(cont <= cantMem-1 && cantMem != 0){
-                //     if(verificaCero(mem)){
-                //         int pos=retornaPos_En_Cero(mem);
-                //         popM(mem,pos,memtotal);
-                
-                //     }
-                //     else
-                //     break;
-
-                //     cont++;
-                // } 
-                 
                 printTex(tex,filename,head,mem,tiempo); 
                 tiempo++;
                 restaDuracion(mem);
@@ -118,23 +100,6 @@ while(!finished){
            limpiaId(mem);
              if(mem != NULL)
         juntarBloques(mem);
-        // cont=0;
-        // while(cont <= cantMem-1 && cantMem != 0){
-        //     if(verificaCero(mem)){
-        //         int pos=retornaPos_En_Cero(mem);
-        //         popM(mem,pos,memtotal);
-                
-        //     }
-        //     else
-        //      break;
-
-        //     cont++;
-        // }
-         //print_listM(mem);  
-
-
- //print_listM(mem);  
-
     }
     printEnd(tex,filename);
 }
@@ -338,55 +303,103 @@ int tiempo=0;
 
 printEnd(tex,filename);
 }
+// void printTex(FILE* tex, char* filename,p** head, bloque**mem, int tiempo){
+
+// //tex = fopen(filename,"w+");
+//  if((*head) != NULL){
+//     p* currentL=(*head);
+//     bool flag = false;
+//     // while(currentL != NULL){
+//     //     if(currentL->horallegada <= tiempo){
+//     //         if(!flag){
+//     //         char * msg4="En cola \n\n\\begin{table}\\begin{tabular}{|c|c|}\n\\hline\n";
+//     //         fprintf(tex,"%s",msg4);
+//     //         }
+//     //     fprintf(tex,"ID=%d & TAM=%d \\\\ \\hline\n",currentL->id,currentL->tama);
+//     //     flag=true;
+//     //     }
+//     //     currentL = currentL->next;
+//     // }
+//     // if(flag){
+//     // char * msg5="\\end{tabular}\n \\end{table}\n";
+//     // fprintf(tex,"%s",msg5);
+//     // }
+//     }
+//     if((*mem)!= NULL){
+//     char * msg="\\begin{center}\n\nInstante: ";
+//     fprintf(tex,"%s%d%s",msg,tiempo,"\n\n");
+//     char* msg2="\\begin{tabular}{|c|c|}\n\\hline\n";
+//     fprintf(tex,"%s",msg2);
+//     bloque* currentM=(*mem);
+//     while(currentM != NULL){
+//         fprintf(tex,"ID=%d & TAM=%d \\\\ \\hline\n",currentM->id,currentM->tama);
+//         currentM=currentM->next; 
+//     }
+//     char * msg3="\\end{tabular}\n\\end{center}\n\\pagebreak\n";
+//     fprintf(tex,"%s",msg3);
+//     }
+//     else{
+//         char * msg="\\begin{center}\nInstante: ";
+//         fprintf(tex,"%s%d\n%s",msg,tiempo,"Memoria Vacia\\\\\n\\end{center}\n");
+//         char *msg3="\n";
+//         //fprintf(tex,"%s",msg3);
+//     }
+   
+//   //  else{
+//        // char * msg4="En cola: Vacia \n";
+//         //fprintf(tex,"%s",msg4);
+//         // char* msg5="\\end{table}\n";
+//         // fprintf(tex,"%s",msg5);
+//   //  }
+//    // fclose(tex);
+// }
 void printTex(FILE* tex, char* filename,p** head, bloque**mem, int tiempo){
 
-//tex = fopen(filename,"w+");
- if((*head) != NULL){
-    p* currentL=(*head);
-    bool flag = false;
-    // while(currentL != NULL){
-    //     if(currentL->horallegada <= tiempo){
-    //         if(!flag){
-    //         char * msg4="En cola \n\n\\begin{table}\\begin{tabular}{|c|c|}\n\\hline\n";
-    //         fprintf(tex,"%s",msg4);
-    //         }
-    //     fprintf(tex,"ID=%d & TAM=%d \\\\ \\hline\n",currentL->id,currentL->tama);
-    //     flag=true;
-    //     }
-    //     currentL = currentL->next;
-    // }
-    // if(flag){
-    // char * msg5="\\end{tabular}\n \\end{table}\n";
-    // fprintf(tex,"%s",msg5);
-    // }
-    }
-    if((*mem)!= NULL){
+if((*mem) != NULL){
     char * msg="\\begin{center}\n\nInstante: ";
     fprintf(tex,"%s%d%s",msg,tiempo,"\n\n");
     char* msg2="\\begin{tabular}{|c|c|}\n\\hline\n";
     fprintf(tex,"%s",msg2);
-    bloque* currentM=(*mem);
+    bloque* currentM = (*mem);
+    p* currentL = (*head);
+
     while(currentM != NULL){
         fprintf(tex,"ID=%d & TAM=%d \\\\ \\hline\n",currentM->id,currentM->tama);
-        currentM=currentM->next; 
+        currentM = currentM->next;
     }
-    char * msg3="\\end{tabular}\n\\end{center}\n\\pagebreak\n";
+    char * msg3="\\end{tabular}\n";
     fprintf(tex,"%s",msg3);
+    bool flag = false;
+    while(currentL != NULL){
+        if(currentL->horallegada <= tiempo){
+            if(!flag){
+            char * msg4="\\\\\n\\hfill \\break\n\\hfill \\break\n\\hfill \\break\nEn cola\n\\\\\n\\begin{tabular}{|c|c|}\n\\hline\n";
+            fprintf(tex,"%s",msg4);
+            }
+        fprintf(tex,"ID=%d & TAM=%d \\\\ \\hline\n",currentL->id,currentL->tama);
+        flag=true;
+        }
+        currentL = currentL->next;
+    }
+    if(flag){
+    char * msg5="\\end{tabular}\n\\end{center}\n\\pagebreak\n";
+    fprintf(tex,"%s",msg5);
     }
     else{
+        fprintf(tex,"\\end{center}\\pagebreak\n");
+    }
+}
+     else{
         char * msg="\\begin{center}\nInstante: ";
         fprintf(tex,"%s%d\n%s",msg,tiempo,"Memoria Vacia\\\\\n\\end{center}\n");
         char *msg3="\n";
-        //fprintf(tex,"%s",msg3);
+        fprintf(tex,"%s",msg3);
     }
-   
-  //  else{
-       // char * msg4="En cola: Vacia \n";
-        //fprintf(tex,"%s",msg4);
-        // char* msg5="\\end{table}\n";
-        // fprintf(tex,"%s",msg5);
-  //  }
-   // fclose(tex);
-}
 
+
+
+
+
+
+}
 
