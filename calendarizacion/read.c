@@ -32,7 +32,6 @@ void read_gen(FILE *file, char *filename, p**head)
     int cant=0;
     while (!feof(file))
     {
-        
         char aux[6];
         fscanf(file,"%s",aux);
         if(cant==3){
@@ -41,9 +40,7 @@ void read_gen(FILE *file, char *filename, p**head)
             cant=0;
         }
         else
-        array[cant++]=atoi(aux);
-        
-       
+        array[cant++]=atoi(aux);    
     }
     fclose(file);
 }

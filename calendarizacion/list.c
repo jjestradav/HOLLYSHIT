@@ -10,6 +10,9 @@ void dequeue(p **head);
 void print_list(p **head);
 int isEmpty();
 p* last(p**head);
+p* popLpos(p** head,int pos);
+int retornaPosBF(p** head, int tiempo);
+int retornaPosWF(p** head, int tiempo);
 
 typedef struct proceso
 {
@@ -143,7 +146,104 @@ p* last(p**head){
         return current;
 }
 
+p* popLpos(p** head,int pos){
 
+    p * current = (*head);
+    p* temp_node = NULL;
+
+    if (pos == 0) {
+        
+        
+        (*head) = (*head)->next;
+        current->next = NULL;
+
+        if(current==(*head))
+            (*head)=NULL;
+
+        return current;
+    }
+
+    for (int i = 0; i < pos-1; i++) {
+        if (current->next == NULL) {
+            return NULL;
+        }
+        current = current->next;
+    }
+
+    temp_node = current->next;
+    current->next = temp_node->next;
+    temp_node->next= NULL;
+    return temp_node;
+
+}
+
+int retornaPosBF(p** head,int tiempo){
+
+int pos=0;
+int aux1=0;
+if((*head)->horallegada <= tiempo)
+    aux1=(*head)->tama;
+    else 
+    aux1 = -1;
+
+p* current=(*head);
+while(current != NULL){
+    if(aux1 == -1){
+        if(current->horallegada <= tiempo)
+            aux1 = current->tama;
+    }
+    else
+    {
+      if(current->tama < aux1 && current->horallegada <= tiempo)
+        aux1=current->tama;
+    }
+
+        current=current->next;
+}
+current = (*head);
+while(current != NULL){
+    if(current->tama == aux1){
+        return pos;
+    }
+    current = current->next;
+    pos++;
+}
+ return -1;
+}
+int retornaPosWF(p** head, int tiempo){
+int pos=0;
+int aux1=0;
+if((*head)->horallegada <= tiempo)
+    aux1=(*head)->tama;
+    else 
+    aux1 = -1;
+
+p* current=(*head);
+while(current != NULL){
+    if(aux1 == -1){
+        if(current->horallegada <= tiempo)
+            aux1 = current->tama;
+    }
+    else
+    {
+      if(current->tama > aux1 && current->horallegada >= tiempo)
+        aux1=current->tama;
+    }
+
+        current=current->next;
+}
+current = (*head);
+while(current != NULL){
+    if(current->tama == aux1){
+        return pos;
+    }
+    current = current->next;
+    pos++;
+}
+ return -1;
+
+
+}
 
 
 #endif
