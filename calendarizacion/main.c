@@ -64,7 +64,9 @@ int main()
         }
         else
         if(!strcmp(arg[0],"Paginacion")){
-            paginacion(arg , &head);
+            tex=fopen(filename2,"w");
+            paginacion(arg , &head, tex, filename2);
+              fclose(tex);
         }
     
 
