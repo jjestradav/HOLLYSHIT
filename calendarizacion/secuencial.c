@@ -22,10 +22,8 @@ void printBegin(FILE * tex, char* filename, int tamaOri, char* algoritmo){
   
 }
 void printEnd(FILE * tex,char* filename){
-    //tex = fopen(filename, "w+");
     char* msg="\\end{document}\n";
     fputs(msg,tex);
-    //fclose(tex);
 }
 void FIFO(p** head, bloque** mem,int * memtotal, FILE* tex,char* filename, int tamaOri, char* algoritmo){
 printBegin(tex,filename,tamaOri,algoritmo);
