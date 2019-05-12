@@ -106,13 +106,13 @@ void dequeue(p **head){
         return;
     }
     p* t;
-    int a , b ,c ,d;
     t=(*head);
     (*head)=(*head)->next;
-    a = t->id;
-    b= t->duracion;
-    c= t->horallegada;
-    d= t->tama;
+    t->next=NULL;
+   
+    if(t==(*head))
+    (*head)=NULL;
+   
     free(t);
     t=NULL;
 
