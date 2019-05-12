@@ -17,7 +17,7 @@ void printBegin(FILE * tex, char* filename, int tamaOri, char* algoritmo){
    // tex = fopen(filename, "w+");
     //char* msg="\\documentclass[10pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\begin{document}\n\\begin{center}\n";
     fputs("\\documentclass[10pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\begin{document}\n\\begin{center}\n",tex);
-   fprintf(tex,"\\section*{Simunlación de manejo de memoria}\n\\begin{description}\n\\item[Algoritmo:] %s \n", algoritmo);
+   fprintf(tex,"\\section*{Simulación de manejo de memoria}\n\\begin{description}\n\\item[Algoritmo:] %s \n", algoritmo);
    fprintf(tex,"\\item[Tamaño total:] %d \n\\end{description}\n\\end{center}\n",tamaOri);
     //fclose(tex);
   
@@ -193,14 +193,49 @@ int tiempo=0;
             else{
                 int pos= retornaPosBF(head,tiempo);
                 if(pos != -1){
-                    aux= popLpos(head,pos);
+
+                    aux= retornaPosL(head, pos);
                     if( aux != NULL){
                         int posM=retornaPosMBF(mem,aux->tama);
                         if(posM != -1){
                             pushMpos(mem,aux->id,aux->tama,aux->duracion,posM);
+                            popLpos(head,pos);
+                        }
+                        else{
+                              printTex(tex,filename,head,mem,tiempo);
+                                tiempo++;
+                                   if((*mem)!= NULL){ 
+                                 restaDuracion(mem); 
+                                    limpiaId(mem); 
+                                     juntarBloques(mem);
+                                            }
+
+                                continue;
                         }
                     }
+                    else{
 
+                         printTex(tex,filename,head,mem,tiempo);
+                                tiempo++;
+                                   if((*mem)!= NULL){ 
+                                 restaDuracion(mem); 
+                                    limpiaId(mem); 
+                                     juntarBloques(mem);
+                                            }
+
+                                continue;
+                    }
+
+                }
+                else{
+                    printTex(tex,filename,head,mem,tiempo);
+                    tiempo++;
+                       if((*mem)!= NULL){ 
+                                 restaDuracion(mem); 
+                                    limpiaId(mem); 
+                                     juntarBloques(mem);
+                                            }
+                    continue;
                 }
                  //print_list(head);
             }
@@ -221,6 +256,7 @@ int tiempo=0;
                         continue;  
                     }
                     else{
+                            printTex(tex,filename,head,mem,tiempo); 
                             finished=true;
                             continue;
                     }
@@ -250,7 +286,7 @@ void WorstFit(p** head,bloque** mem, int * memtotal, FILE* tex ,char* filename,i
     printBegin(tex,filename,tamaOri,algoritmo);
 
 int currentSize = tamaOri;
-int tiempo= 0 ;
+int tiempo=0;
     p* aux = NULL;
     bool finished=false;
     while(!finished){
@@ -259,8 +295,8 @@ int tiempo= 0 ;
              printf("\nHola\n");
          }
         if(isEmpty(head)!= 0){
-               if(mem != NULL)
-                    juntarBloques(mem);
+            //    if(mem != NULL)
+            //         juntarBloques(mem);
 
             if((*head)->tama <= currentSize) {
                 if((*head)->horallegada <= tiempo){
@@ -268,13 +304,14 @@ int tiempo= 0 ;
                             pop(head);
                   else{
 
+                      printTex(tex,filename,head,mem,tiempo); 
                       
                       if((*mem) != NULL){
                           restaDuracion(mem); 
                       limpiaId(mem);
                       juntarBloques(mem);
                      // print_listM(mem);
-                      printTex(tex,filename,head,mem,tiempo); 
+                      
                       tiempo++;
                       }
                       
@@ -282,21 +319,6 @@ int tiempo= 0 ;
                   }          
                 }
                 else{
-                         
-                      if((*mem)!= NULL){ 
-                        restaDuracion(mem); 
-                        limpiaId(mem); 
-                        juntarBloques(mem);
-                        }
-                        //print_listM(mem);
-                        printTex(tex,filename,head,mem,tiempo); 
-                        tiempo++;
-                        continue;
-                    }
-                }
-            
-            else{
-
                      if((*head)->tama > tamaOri ){
                           push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
                             pop(head);
@@ -304,17 +326,66 @@ int tiempo= 0 ;
                             tiempo++;
                              continue;
                              }
-
+         
+                         printTex(tex,filename,head,mem,tiempo);
+                      if((*mem)!= NULL){ 
+                        restaDuracion(mem); 
+                        limpiaId(mem); 
+                        juntarBloques(mem);
+                        }
+                        //print_listM(mem);
+                        
+                        tiempo++; 
+                        continue;
+                    }
+                }
+            
+            else{
                 int pos= retornaPosWF(head,tiempo);
                 if(pos != -1){
-                    aux= popLpos(head,pos);
+
+                    aux= retornaPosL(head, pos);
                     if( aux != NULL){
                         int posM=retornaPosMWF(mem,aux->tama);
                         if(posM != -1){
                             pushMpos(mem,aux->id,aux->tama,aux->duracion,posM);
+                            popLpos(head,pos);
+                        }
+                        else{
+                              printTex(tex,filename,head,mem,tiempo);
+                                tiempo++;
+                                   if((*mem)!= NULL){ 
+                                 restaDuracion(mem); 
+                                    limpiaId(mem); 
+                                     juntarBloques(mem);
+                                            }
+
+                                continue;
                         }
                     }
+                    else{
 
+                         printTex(tex,filename,head,mem,tiempo);
+                                tiempo++;
+                                   if((*mem)!= NULL){ 
+                                 restaDuracion(mem); 
+                                    limpiaId(mem); 
+                                     juntarBloques(mem);
+                                            }
+
+                                continue;
+                    }
+
+                }
+                else{
+                    printTex(tex,filename,head,mem,tiempo);
+                    tiempo++;
+                       if((*mem)!= NULL){ 
+                                 restaDuracion(mem); 
+                                    limpiaId(mem); 
+                                     juntarBloques(mem);
+                                            }
+                    continue;
                 }
                  //print_list(head);
             }
@@ -322,18 +393,20 @@ int tiempo= 0 ;
         }
             if(isEmpty(head)== 0 && isEmptyM(mem)!= 0){
                     if(!Terminado(mem)){
-                           
+                            
+                            printTex(tex,filename,head,mem,tiempo); 
                         restaDuracion(mem);
                         limpiaId(mem);
                         if(mem != NULL)
                             juntarBloques(mem);
 
-                         printTex(tex,filename,head,mem,tiempo);  
-                          tiempo++;
+                         
+                         tiempo++; 
                         //print_listM(mem); 
                         continue;  
                     }
                     else{
+                            printTex(tex,filename,head,mem,tiempo); 
                             finished=true;
                             continue;
                     }
@@ -342,7 +415,8 @@ int tiempo= 0 ;
             }
 
 
-           
+            
+             printTex(tex,filename,head,mem,tiempo);  
             
             if((*mem)!= NULL){
               restaDuracion(mem); 
@@ -351,12 +425,13 @@ int tiempo= 0 ;
               // print_listM(mem); 
             }
                 
-            printTex(tex,filename,head,mem,tiempo);  
-                tiempo++; 
+           
+              tiempo++;  
         }
 
 printEnd(tex,filename,&listAux);
 }
+
 
 void printTex(FILE* tex, char* filename,p** head, bloque**mem, int tiempo){
 

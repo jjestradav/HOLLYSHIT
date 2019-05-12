@@ -13,7 +13,7 @@ p* last(p**head);
 p* popLpos(p** head,int pos);
 int retornaPosBF(p** head, int tiempo);
 int retornaPosWF(p** head, int tiempo);
-
+p* retornaPosL(p** head, int pos);
 typedef struct proceso
 {
     int id;
@@ -210,7 +210,8 @@ while(current != NULL){
 }
  return -1;
 }
-int retornaPosWF(p** head, int tiempo){
+int retornaPosWF(p** head,int tiempo){
+
 int pos=0;
 int aux1=0;
 if((*head)->horallegada <= tiempo)
@@ -226,7 +227,7 @@ while(current != NULL){
     }
     else
     {
-      if(current->tama > aux1 && current->horallegada >= tiempo)
+      if(current->tama > aux1 && current->horallegada <= tiempo)
         aux1=current->tama;
     }
 
@@ -241,9 +242,17 @@ while(current != NULL){
     pos++;
 }
  return -1;
-
-
 }
-
+p* retornaPosL(p** head, int pos){
+    p* current = (*head);
+    int cont=0;
+    while(current != NULL){
+        if( cont == pos)
+            return current;
+     current = current->next;
+     cont++;
+    }
+    return NULL;
+}
 
 #endif

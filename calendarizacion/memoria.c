@@ -579,23 +579,21 @@ cont++;
 }
 
   int retornaPosMBF(bloque** head, int tam){
-      int aux = 0;
-      if((*head)->id > 0)
-        aux=-1;
-        else 
-            aux= (*head)->tama;
-        
+      int aux = -1;
+      if((*head)->id <= 0 && tam <= (*head)->tama)
+        aux= (*head)->tama;
+     
 
       int pos=0;
       bloque* current = (*head);
 
       while(current != NULL) {
           if(aux==-1){
-              if(current->id >0)
+              if(current->id <= 0 && tam <= current->tama)
                 aux = current->tama;
           }
           else{
-          if(current->tama < aux && current->id > 0 )
+          if(current->tama < aux && current->id <= 0 && tam <= current->tama )
                 aux=current->tama;
           }
           current = current->next;
@@ -615,24 +613,22 @@ cont++;
 
 
 
-  int retornaPosMWF(bloque** head, int tam){
-      int aux = 0;
-      if((*head)->id > 0)
-        aux=-1;
-        else 
-            aux= (*head)->tama;
-        
+ int retornaPosMWF(bloque** head, int tam){
+      int aux = -1;
+      if((*head)->id <= 0 && tam <= (*head)->tama)
+        aux= (*head)->tama;
+     
 
       int pos=0;
       bloque* current = (*head);
 
       while(current != NULL) {
           if(aux==-1){
-              if(current->id >0)
+              if(current->id <= 0 && tam <= current->tama)
                 aux = current->tama;
           }
           else{
-          if(current->tama > aux && current->id > 0 )
+          if(current->tama > aux && current->id <= 0 && tam <= current->tama )
                 aux=current->tama;
           }
           current = current->next;

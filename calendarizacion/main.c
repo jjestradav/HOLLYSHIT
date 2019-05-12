@@ -24,7 +24,7 @@ int main()
     char* name="config.txt";
     read_config(f,name,arg);
 
-    char* str1="../";
+    char* str1="../Salida/";
     char* str2= arg[3];
     char * filename2 = (char *) malloc(1 + strlen(str1)+ strlen(str2) );
     strcpy(filename2, str1);
