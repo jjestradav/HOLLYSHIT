@@ -119,16 +119,386 @@ int valorPoisson(long double r){
 Con lo anterior se solucionaba la forma en la que los procesos variaban en sus horas de llegada a la cola de procesos 
 \pagebreak
 \subsection{Descripción de los algoritmos utilizados}
-\begin{enumerate}
-\item 44
-\end{enumerate}
+\subsubsection{Lectura del Archivo de Procesos}
+Para este problema se necesitó la ayuda de un método que pudiera leer de un archivo .txt previamente creado por el generador de procesos.
+Antes de poder leer el archivo se creó una lista enlazada de procesos con las siguientes caracteristicas:
+\begin{verbatim}
+struct proceso
+{
+int id;
+int duracion;
+int horallegada;
+int tama;
+struct proceso *next;
+} 
+\end{verbatim}
+Esto con el fin de poder almacenar cada uno de los procesos leídos durante el método.
+Para relizar dicha lectura, se utilizó el método "fscanf" de la libería "stdio.h".
+Este método lee las cádenas de caracteres que están antes de un tab o un salto de línea. 
+Gracias a eso y ayudados por un arreglo de tamaño 4 se pudo leer cada uno de los atributos del proceso ya que era sabido que son 4 atributos. Cada vez que la variable cantidad sea 3, se sabe que ya leyó 3 atributos de un proceso. Entonces solo queda un atributo más por leer, se lee el atributo y se inserta en la lista enlazada un proceso con los 4 atributos antes leídos.
+  
+\begin{verbatim}
+aux
+while (!feof(file))
+{
+char aux[6];
+fscanf(file,"%s",aux);
+if(cant==3){
+array[3]=atoi(aux);
+push(head, array[0],array[1],array[2],array[3]);
+cant=0;
+}
+else
+array[cant++]=atoi(aux);    
+} 
+\end{verbatim}
+
+\subsubsection{Lectura del Archivo de Cofiguración}
+La lectura de este archivo fue más compleja que la del archivo de procesos dado que el archivo tenía su propio sistema de comentado con el caratér `\symbol{35}'
+
+.
+Esta lectura fue posible gracias a la función `fgets()' de la librería "stdio".
+Esta función lee toda la cadena de caracteres que en la línea, y al encontrarse con un salto de línea, sigue con la siguiente.
+Leída una línea del archivo se analizaba la cadena de caracteres leída y se descartaba todo lo que estuviera después de un espacio, incluido el espacio.
+Luego de esto se inserta en un arreglo pasado por parámetro la cadena resultante.
+\begin{verbatim}
+  char s[MAX];
+int i = 0;
+while (!feof(file))
+{
+fgets(s, MAX, file);
+char *aux = calloc(sizeof(char), 15);
+for (int j = 0; j < MAX; j++){
+if (s[j] == ' ')
+break;
+else
+aux[j] = s[j];
+}
+arg[i++] = aux;
+memset(&(s[0]), 0, MAX);
+}
+\end{verbatim}
+
 \section{Descripción del manejo de la simulación}
 \subsection{Modo Secuencial}
 \subsubsection{FIFO}
+Este algoritmo es el más sencillo de todos ya que no se necesita iterar la lista de procesos ni la memoria. Simplemente el proceso que esté de primero entra a la memoria, siempre y cuando su hora de llegada lo permita.
+Para este método se utilizó la lista de procesos
+mencionada anteriormente y para la memoria se utilizó una lista enlazada con las siguientes características:
+\begin{verbatim}
+typedef struct bloque
+{
+int id;
+int tama;
+int duracion;
+struct bloque *next;
+}
+\end{verbatim}
+Para la inserción en la lista enlazada de bloques de memoria, se realizó el método `pushMem()'. Este método inserta el proceso en la lista, siempre y cuando haya espacio disponible. Cuando lo va a insertar, se inserta otro nodo con el resultado de la resta del tamaño del bloque disponible con el tamaño del bloque a insertar. Luego de esto se le resta el tamaño del bloque insertado al tamaño total de la memoria.
+\begin{verbatim}
+bloque *temp = (bloque*)malloc(sizeof(bloque));
+temp->id = 0;
+temp->tama = current->tama - temp->tama;
+temp->duracion = 0;
+current->id = id;
+current->duracion=duracion;
+current->tama = tama;
+temp->next = current->next;
+current->next = temp;
+currentSize -= tama;
+\end{verbatim}
+
+Para nuestro control, un bloque de memoria con un ID menor o igual a cero es un bloque de memoria desocupado. Y puesto que teníamos que estar actulizando los bloques mediante el tiempo transcurrido, hicimos el método `limpiaId()' que básicamente lo que hace es poner en cero a todos los ID de los bloques que tengan una duración menor o igual a cero.
+\begin{verbatim}
+void limpiaId(bloque **head){
+bloque * current = (*head);
+while(current != NULL ){
+if(current->id != 0 && current->duracion<=0 )
+	current->id=0;
+
+current = current->next;
+	    }
+}
+\end{verbatim}
+Pero teníamos un problema, no teníamos forma de restar unidades de tiempo internamente en la memoria. Dado esto problema, la solución que aplicamos fue hacer una función que iterara los bloques de la memoria y restara una unidad de tiempo a cada uno de los bloques donde la duración fuera estrictamente mayor a cero.
+\begin{verbatim}
+void restaDuracion(bloque**head){
+bloque* current= (*head);
+while(current != NULL ){
+if(current->duracion > 0)
+current->duracion--;
+current=current->next;
+   }
+}
+\end{verbatim}
+El mayor problema que tuvimos a la hora de realizar los algoritmos de modo secuencial fue a la hora de que dos bloques que estuvieran desocupados se hicieran un solo bloque, sumando así sus respectivos tamaños. Para eso implementamos la función `juntarBloques()'. 
+Esta función fue la que más tiempo duramos en implementar, ya que había que tomar en cuenta todos los posibles casos en que pudiera estar acomodada la lista enlazada. Puesto que si habían dos bloques consecutivos pero uno de esos bloques no tenía el ID en cero (recordemos que cero en el ID es un bloque desocupado), no se podía realizar la operación.
+Además, había que tomar en cuenta si solo había un bloque y también si habían más de dos bloques consecutivos que estaban desocupados.
+Para saber si la simulación ya había terminda se realizó la función `Terminado()' la cual retorna verdadero si todos los bloques de la lista enlazada tienen su ID menor o igual a cero(Recordemos la función `limpiaId()' explicada anteriormente).
+\begin{verbatim}
+   bool Terminado(bloque**head){
+bloque* current=(*head);
+while(current != NULL){
+if(current->duracion > 0 && current->id > 0)
+return false;
+
+current=current->next;
+      }
+return true;
+ }
+\end{verbatim}
+  
 \subsubsection{Best-fit}
+Para este algoritmo se utilizó la mayoría de métodos que se implementaron para FIFO a diferencía que cuando la memoria se llena y todavía quedan procesos sin entrar a la memoria se busca:
+En la lista de procesos al proceso con menor tamaño y además que su hora de llegada sea menor o igual a la unidad de tiempo actual.
+En la lista de bloques de memoria, se busca el bloque con menor tamaño que pueda equiparar el tamaño del proceso a insertar.
+Esto se hace con el objetivo de se produzca un bloque resultante con el menor tamaño posible.
+\begin{verbatim}
+En la lista de procesos
+int retornaPosBF(p** head,int tiempo){
+
+int pos=0;
+int aux1=0;
+if((*head)->horallegada <= tiempo)
+aux1=(*head)->tama;
+else 
+aux1 = -1;
+
+p* current=(*head);
+while(current != NULL){
+if(aux1 == -1){
+if(current->horallegada <= tiempo)
+aux1 = current->tama;
+}
+else
+{
+if(current->tama < aux1 && current->horallegada <= tiempo)
+aux1=current->tama;
+}
+
+current=current->next;
+}
+current = (*head);
+while(current != NULL){
+if(current->tama == aux1){
+return pos;
+}
+current = current->next;
+pos++;
+}
+return -1;
+}
+
+En la lista de bloques de memoria
+
+ int retornaPosMBF(bloque** head, int tam){
+int aux = 0;
+if((*head)->id > 0)
+aux=-1;
+else 
+aux= (*head)->tama;
+
+int pos=0;
+bloque* current = (*head);
+
+while(current != NULL) {
+if(aux==-1){
+if(current->id >0)
+aux = current->tama;
+}
+else{
+if(current->tama < aux && current->id > 0 )
+aux=current->tama;
+}
+current = current->next;
+}
+
+current=(*head);
+while(current != NULL){
+if(current->tama == aux)
+return pos;
+
+current= current->next;
+pos++;
+}
+return -1;
+
+}  
+\end{verbatim}
+El manejo de las unidades de tiempo y la verificación de si la simulación ya estaba terminada se implementó exactamente igual que se hizo en FIFO.
 \subsubsection{Worst-fit}
+Este modo es muy parecido a Best Fit a diferencia que su objetivo es insertar en memoria los procesos con mayor tamaño. Y así el tamaño sobrante es más grande y puede ser aprovechado.
+Esto se realiza iterando la lista de procesos en busca del proceso con mayor tamaño(siempre y cuando su hora de llegada lo permita).
+En la lista de bloques de memoria se busca el bloque con el tamaño más grande que pueda equiparar el tamaño del proceso a insertar.
+\begin{verbatim}
+En la lista de procesos
+int retornaPosWF(p** head,int tiempo){
+int pos=0;
+int aux1=0;
+if((*head)->horallegada <= tiempo)
+aux1=(*head)->tama;
+else 
+aux1 = -1;
+
+p* current=(*head);
+while(current != NULL){
+if(aux1 == -1){
+if(current->horallegada <= tiempo)
+aux1 = current->tama;
+}
+else
+{
+if(current->tama > aux1 && current->horallegada <= tiempo)
+aux1=current->tama;
+}
+
+current=current->next;
+}
+current = (*head);
+while(current != NULL){
+if(current->tama == aux1){
+return pos;
+}
+current = current->next;
+pos++;
+}
+return -1;
+}
+
+En la lista de bloques de memoria
+
+int retornaPosMWF(bloque** head, int tam){
+int aux = 0;
+if((*head)->id > 0)
+aux=-1;
+else 
+aux= (*head)->tama;
+
+int pos=0;
+bloque* current = (*head);
+
+while(current != NULL) {
+if(aux==-1){
+if(current->id >0)
+aux = current->tama;
+}
+else{
+if(current->tama > aux && current->id > 0 )
+aux=current->tama;
+}
+current = current->next;
+}
+current=(*head);
+while(current != NULL){
+if(current->tama == aux)
+return pos;
+
+current= current->next;
+pos++;
+}
+return -1;
+}  
+\end{verbatim}
+
 \subsection{Modo Paginación}
+\subsection{Impresión en el archivo LaTeX}
+Para la impresión en el archivo laTeX se utilizaron tres funciónes:
+\begin{itemize}
+	\item `printBegin()'
+    \item`printTex()'
+	\item`printEnd()'
+\end{itemize}
+En `printBegin' básicamente se imprime en el archivo .tex todo lo relacionado al encabezado principal. Este método se pone al principio de cada método que se implementó para los diferentes algoritmos de manejo de memoria.
+\begin{verbatim}
+  fputs("\\documentclass[10pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\begin{document}\n\\begin{center}\n",tex);
+  
+fprintf(tex,"\\section*{Configuracion}\n\\begin{description}\n\\item[Algoritmo:] %s \n", algoritmo);
+
+fprintf(tex,"\\item[Tamaño total:] %d \n\\end{description}\n\\end{center}\n",tamaOri);
+\end{verbatim}
+Recordemos que en C el backslash`(\textbackslash)' es un caractér reservado. Dado esto, para poder imprimir un solo backslash se necesita escribir dos veces el bacslash.
+\\
+En `printTex()' es donde se imprime las listas.
+Para cada instante se imprime la memoria simulada que en nuestro caso sería la lista enlazada de bloques de memoria en forma de stack. La lista de procesos se imprime sí y solo sí hay procesos que su hora de llegada es mayor al instante y no han podido ingresar a la memoria (simulando una cola). Para eso, se itera la lista de bloques de memoria y se imprime. Luego de esta impresión se verifica si hay algún proceso `encolado' y de ser así se imprime.
+Si la lista de procesos está vacía se imprime que la lista está vacía para ese instante.
+\begin{verbatim}
+Codigo en C
+
+char * msg="\\begin{center}\n\nInstante: ";
+fprintf(tex,"%s%d%s",msg,tiempo,"\n\n");
+char* msg2="\\begin{tabular}{|c|c|}\n\\hline\n";
+fprintf(tex,"%s",msg2);
+bloque* currentM = (*mem);
+p* currentL = (*head);
+
+while(currentM != NULL){
+fprintf(tex,"ID=%d & TAM=%d \\\\ \\hline\n",currentM->id,currentM->tama);
+currentM = currentM->next;
+}
+\end{verbatim}
+\begin{verbatim}
+Codigo LaTeX Resultante
+
+
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\begin{document}
+\begin{center}
+\section*{Configuracion}
+\begin{description}
+\item[Algoritmo:] FIFO 
+\item[Tamaño total:] 800 
+\end{description}
+\end{center}
+\begin{center}
+Instante: 0
+Memoria Vacia\\
+\end{center}
+
+\begin{center}
+Instante: 1
+Memoria Vacia\\
+\end{center}
+
+  ...
+
+Instante: 17
+
+\begin{tabular}{|c|c|}
+\hline
+ID=10 & TAM=73 \\ \hline
+ID=11 & TAM=122 \\ \hline
+ID=-1 & TAM=605 \\ \hline
+\end{tabular}
+\\
+\hfill \break
+\hfill \break
+\hfill \break
+En cola
+\\
+\begin{tabular}{|c|c|}
+\hline
+ID=12 & TAM=38 \\ \hline
+\end{tabular}
+\end{center}
+\pagebreak
+\begin{center}
+\end{verbatim}
+En `printEnd()' solamente se imprime en el archivo la etiqueta de cierre de documento necesaria para que el archivo LaTeX compile correctamente.
+\begin{verbatim}
+void printEnd(FILE * tex,char* filename){ 
+char* msg="\\end{document}\n";
+fputs(msg,tex);
+}
+\end{verbatim}
 \section{Problemas encontrados}
+El primer problema encontrado fue el no poder generar los procesos de acuerdo a la distribución de Poisson. No podíamos avanzar en el proyecto dado que sin los procesos generados no se podía simular nada.
+Gracias a que el profesor hizo un ejemplo de cómo implementar la distribución de Poisson, pudimos avanzar en ese aspecto.\\
+Otro de los principales problemas fue la sincronización entre la unidad de tiempo, la hora de llegada y el tiempo de ejecución del procesador.
+Al principio no sabíamos como indicarle al procesador para que no hiciera todo el proceso de un solo, sino que `simulara' esas unidades de tiempo. Eso lo resolvimos con un número contador.
+Resuelto esa parte del problema, teníamos que idear una forma en que conforme esa unidad de tiempo fuera aumentando en el método donde teníamos ese contador, fuera disminuyendo la duración de los procesos en memoria. Este problema lo resolvimos con la función `restaDuracion()' explicada anteriormente.\\
+Otro de los problemas que frecuentemenete
+tuvimos fueron los segmentation faults. Esto muchas veces ocurría puesto que estábamos utilizando lista enlazadas que en el fondo son punteros. Cuando se utilizaba un puntero qué no había sido asignado o estaba apuntando a NULL, ahí era donde se producía el segmentation fault.
 \section{Conclusiones}
 \begin{itemize}
 \item 22
