@@ -1,15 +1,16 @@
-.PHONY: all clean calendarizacion generador
-
+# CFLAGS= -g -Wall -Wextra
+.PHONY: all 
 CC=gcc
 
 
-all: calendarizacion generador
-	 
+all: +$(MAKE) -C calendarizacion
+	 +$(MAKE) -C generador
 
-calendarizacion: calendarizacion/main.c
-	$(CC) calendarizacion/main.c -lm -o cal
 
-generador: generador/main.c
-	$(CC) generador/main.c -lm -o gen
-clean:
-	rm -rf *.o 
+# calendarizacion: calendarizacion/main.c
+# 	$(CC) calendarizacion/main.c -lm -o cal
+
+# generador: generador/main.c
+# 	$(CC) generador/main.c -lm -o gen
+# clean:
+# 	rm -rf *.o 
