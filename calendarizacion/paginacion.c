@@ -19,7 +19,7 @@ int isEmptyP(page **mat, int filas, int columnas)
                 flag += 1;
             }
         }
-        return (flag == (filas * columnas) ? 1 : 0);
+        return (flag == (filas * columnas) ? 0 : 1);
     }
 }
 void paginacion(char *arg[], p **head)
@@ -30,7 +30,7 @@ void paginacion(char *arg[], p **head)
     int cantfilas = sqrt(cantceldas);
     page *matriz[cantfilas][cantfilas];
     p *temp = NULL;
-    p *espera=NULL;
+    p *espera = NULL;
     temp = *head;
     espera = temp;
     for (int i = 0; i < cantfilas; i++)
@@ -45,26 +45,29 @@ void paginacion(char *arg[], p **head)
             matriz[i][j] = NULL;
         }
     }
-    int instante = 0;
-    while (isEmpty(head) && !isEmptyP(*matriz, cantfilas, cantfilas))
+    int instante = 1;
+    while (isEmpty(head)!=0 && isEmptyP(*matriz, cantfilas, cantfilas)!=0)
     {
         for (int i = 0; i < cantfilas; i++)
         {
             for (int j = 0; j < cantfilas; j++)
             {
-                if (temp->horallegada <= instante)
+                
+                if ((*head)!=NULL && (*head)->horallegada <= instante)
                 {
                     if (matriz[i][j] == NULL)
                     {
                         page *nueva = malloc(sizeof(page));
                         matriz[i][j] = nueva;
-                        nueva->id = temp->id;
-                        nueva->duracion = temp->duracion;
-                        temp->tama -= tampage;
-                        if ((tampage - temp->tama) >= 0)
+                        nueva->id = (*head)->id;
+                        nueva->duracion = (*head)->duracion;
+                        nueva->sobrante = 0;
+                        (*head)->tama -= tampage;
+                        if ((tampage - (*head)->tama) >= 0)
                         {
-                            nueva->sobrante = tampage - temp->tama;
+                            nueva->sobrante = tampage - (*head)->tama;
                             dequeue(head);
+                            espera=*head;
                             break;
                         }
                     }
@@ -73,28 +76,41 @@ void paginacion(char *arg[], p **head)
                         matriz[i][j]->duracion -= 1;
                         if (matriz[i][j]->duracion == 0)
                         {
+                            free(matriz[i][j]);
                             matriz[i][j] = NULL;
                         }
                     }
                 }
+            }
+        }
+
+        for (int i = 0; i < cantfilas; i++)
+        {
+            for (int j = 0; j < cantfilas; j++)
+            {
                 if (matriz[i][j] != NULL)
                 {
-                    printf("%d, %d, %s", matriz[i][j]->id, matriz[i][j]->sobrante, "\n");
+                    printf("%d %d       ", matriz[i][j]->id, matriz[i][j]->sobrante);
+                }
+                else
+                {
+                    printf("%s      ", "---");
                 }
             }
-           
-            printf("\t");
+            printf("\n");
         }
-         if (espera->next != NULL)
-            {
-                espera = espera->next;
-            }
-        if (espera->horallegada <= instante)
+        printf("\n");
+
+        if (*head!=NULL && espera->next != NULL)
+        {
+            espera = espera->next;
+        }
+        if ((*head)!=NULL && espera->horallegada <= instante)
         {
             printf("%s", "En espera");
-            printf("%d %s", espera->id, "\t");
+            printf("%d %s", espera->id, "\n");
         }
         // printf("%s", "pagebreak");
-         instante++;
+        instante++;
     }
 }
