@@ -401,6 +401,69 @@ return -1;
 \end{verbatim}
 
 \subsection{Modo Paginación}
+Este modo de manejo de la memoria es el que ejemplifica a la técnica de asignación de memoria actual el cual como se vio en clase es una combinación entre la memoria secuencial y la memoria dínamica(esta solo conceptual, nunca se implemento).\\
+Para el manejo de la memoria en modo de paginación se decidió que la mejor manera de simular esta calendarización era utilizando una estructura de datos que se asemejara a como se distribuye la memoria en realidad, se utilizó una matriz en la que cada posicion de (matriz[i][j]) representaba una pagina de la memoria, asi que el problema era simular como la paginación tiene lugar actualmente.
+Para esto se utilizó además un struct página del cual se instanciaría en la matriz, que se utilizaría.
+\hfill
+\hfill
+\break
+\begin{verbatim}
+typedef struct pagina
+{
+    int id;
+    int duracion;
+    int tama;
+    int sobrante;
+} page;
+\end{verbatim} 
+\hfill
+\hfill
+\break
+En este struct como se puede apreciar que las páginas comparten ciertos atributos con los procesos que están en  la otra estructura de datos auxiliar que se utilizo para el manejo de la calendarizción de los procesos en memoria.
+\hfill
+\hfill
+\break
+\begin{verbatim}
+typedef struct proceso
+{
+    int id;
+    int duracion;
+    int horallegada;
+    int tama;
+    struct proceso *next;
+} p;
+\end{verbatim}
+\hfill
+\hfill
+\break
+Una de la diferencias es más significativas de estos dos structs es que "pagina" posee un atributo de tipo entero llamado sobrante el cual guardará en él, el residuo de operar el tamaño del proceso con el tamaño de la página para que esto almacene este residuo y se mostrase  de ser necesario ya que un proceso puede entrar y necesitar de sólo de una parte de la memoria total de la página.\\
+El enfoque utilizado para la simulación de paginación fue el de calendarizar a los procesos conforme a su hora de llegada, así que se utilizó FIFO en la calendarización de procesos.\\
+En paginación los procesos se ingresa en las páginas que esten vacías, asi que se puede ver como los procesos dentro de la memoria se distribuye en posiciones desordenadas de la matriz que representa la memoria.\\
+En el siguiente segmento de código es lo que se utilizó en el proyecto para que manejar el ingreso de procesos a la memoria: 
+\begin{verbatim}
+...
+if (matriz[i][j] == NULL)
+                    {
+                        page *nueva = malloc(sizeof(page));
+                        matriz[i][j] = nueva;
+                        nueva->id = (*head)->id;
+                        nueva->duracion = (*head)->duracion;
+                        nueva->sobrante = 0;
+                        (*head)->tama -= tampage;
+                        if ((tampage - (*head)->tama) >= 0)
+                        {
+                            nueva->sobrante = tampage - (*head)->tama;
+                            dequeue(head);
+                            espera = *head;
+                            break;
+                        }
+                    }
+...
+\end{verbatim} 
+\hfill
+\hfill
+\break
+
 \subsection{Impresión en el archivo LaTeX}
 Para la impresión en el archivo laTeX se utilizaron tres funciónes:
 \begin{itemize}
