@@ -1,13 +1,12 @@
 .PHONY: all clean
-
 CC=gcc
 
 
-all: main clean
-	 
+all: generador clean
 
-main: main.c
-	$(CC) main.c -lm -o Main
-	
+
+generador: main.c
+	$(CC) main.c -lm -o gen
+
 clean:
 	rm -rf *.o 

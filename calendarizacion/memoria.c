@@ -482,12 +482,14 @@ void juntarBloques(bloque** head){
 
     if(Terminado(head)){
         bloque* current = (*head)->next;
+        (*head)->next = NULL;
         while(current != NULL){
             (*head)->tama += current->tama;
-            //bloque* aux = current;
+            bloque* aux = current;
             current = current->next;
-            //aux->next = NULL;
-            //free(aux);
+            aux->next = NULL;
+            aux=NULL;
+            free(aux);
         }
         (*head)->next = NULL;
         return;

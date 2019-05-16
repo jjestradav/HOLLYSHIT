@@ -14,12 +14,11 @@ void printTex(FILE* tex, char* filename,p** head, bloque** mem, int tiempo);
 p* listAux = NULL;
 void printBegin(FILE * tex, char* filename, int tamaOri, char* algoritmo){
    
-   // tex = fopen(filename, "w+");
-    //char* msg="\\documentclass[10pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\begin{document}\n\\begin{center}\n";
+   
     fputs("\\documentclass[10pt,a4paper]{article}\n\\usepackage[utf8]{inputenc}\n\\begin{document}\n\\begin{center}\n",tex);
    fprintf(tex,"\\section*{Simulación de manejo de memoria}\n\\begin{description}\n\\item[Algoritmo:] %s \n", algoritmo);
    fprintf(tex,"\\item[Tamaño total:] %d \n\\end{description}\n\\end{center}\n",tamaOri);
-    //fclose(tex);
+
   
 }
 void printEnd(FILE* tex, char* filename, p** lAux){
@@ -45,13 +44,15 @@ p* ult = last(head);
 int fin= ult->horallegada;
 int cont=0;
 while(!finished){
-   printf("\n\nIter no.%d**********************\n\n",tiempo);
-    if(tiempo == 13){
-        printf("Hola\n");
-    }
+
     if(isEmpty(head)!= 0 ){
-        //  if(mem != NULL)
-        //             juntarBloques(mem);
+           if((*head)->tama > tamaOri ){
+                          push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
+                            pop(head);
+                            printTex(tex,filename,head,mem,tiempo);
+                            tiempo++;
+                             continue;
+                             }
 
         if((*head)->tama <= currentSize) {
                  if((*head)->horallegada <= tiempo){
@@ -74,14 +75,6 @@ while(!finished){
         }
         else
         {
-            if((*head)->tama > tamaOri ){
-                push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
-
-                pop(head);
-                printTex(tex,filename,head,mem,tiempo);
-                tiempo++;
-                continue;
-            }
          
           if(buscaEspacio(mem,(*head)->id,(*head)->duracion,(*head)->tama)){
              // print_listM(mem);
@@ -140,13 +133,15 @@ int tiempo=0;
     p* aux = NULL;
     bool finished=false;
     while(!finished){
-         printf("\n\nIter no.%d**********************\n\n",tiempo);
-         if(tiempo == 17){
-             printf("\nHola\n");
-         }
+
         if(isEmpty(head)!= 0){
-            //    if(mem != NULL)
-            //         juntarBloques(mem);
+                 if((*head)->tama > tamaOri ){
+                          push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
+                            pop(head);
+                            printTex(tex,filename,head,mem,tiempo);
+                            tiempo++;
+                             continue;
+                             }
 
             if((*head)->tama <= currentSize) {
                 if((*head)->horallegada <= tiempo){
@@ -169,14 +164,6 @@ int tiempo=0;
                   }          
                 }
                 else{
-                     if((*head)->tama > tamaOri ){
-                          push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
-                            pop(head);
-                            printTex(tex,filename,head,mem,tiempo);
-                            tiempo++;
-                             continue;
-                             }
-         
                          printTex(tex,filename,head,mem,tiempo);
                       if((*mem)!= NULL){ 
                         restaDuracion(mem); 
@@ -290,13 +277,15 @@ int tiempo=0;
     p* aux = NULL;
     bool finished=false;
     while(!finished){
-         printf("\n\nIter no.%d**********************\n\n",tiempo);
-         if(tiempo == 17){
-             printf("\nHola\n");
-         }
+  
         if(isEmpty(head)!= 0){
-            //    if(mem != NULL)
-            //         juntarBloques(mem);
+         if((*head)->tama > tamaOri ){
+                          push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
+                            pop(head);
+                            printTex(tex,filename,head,mem,tiempo);
+                            tiempo++;
+                             continue;
+                             }
 
             if((*head)->tama <= currentSize) {
                 if((*head)->horallegada <= tiempo){
@@ -319,14 +308,7 @@ int tiempo=0;
                   }          
                 }
                 else{
-                     if((*head)->tama > tamaOri ){
-                          push(&listAux,(*head)->id,(*head)->horallegada,(*head)->duracion,(*head)->tama);
-                            pop(head);
-                            printTex(tex,filename,head,mem,tiempo);
-                            tiempo++;
-                             continue;
-                             }
-         
+                    
                          printTex(tex,filename,head,mem,tiempo);
                       if((*mem)!= NULL){ 
                         restaDuracion(mem); 
