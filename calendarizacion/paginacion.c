@@ -7,6 +7,31 @@ typedef struct pagina
     int sobrante;
 } page;
 
+int filas=0;
+int columnas=0;
+void factoriza(int cantpaginas){
+    int aux=-1000;
+    int aux1;
+    int aux2;
+    int rows;
+    int cols;
+    for(int i=1; i<cantpaginas; i++){
+        for(int j=1; j<cantpaginas; j++){
+            if(i*j==cantpaginas){
+             aux1= i*(-1);
+             aux2= j*(-1);
+            if(aux<aux1-aux2){
+                aux = aux1-aux2;
+                rows = i;
+                cols = j;
+            }
+            }
+        }
+    }
+    filas=rows;
+    columnas=cols
+
+}
 int isEmptyP(page **mat, int filas, int columnas)
 {
     int flag = 0;
@@ -58,7 +83,7 @@ void paginacion(char *arg[], p **head, FILE *tex, char *filename2)
     }
     int instante = 1;
     printBeginM(tex, filename2, tammemo);
-    while (isEmpty(head) != 0 &&isEmptyP(*matriz, cantfilas, cantfilas) != 0)
+    while (isEmpty(head) != 0 && isEmptyP(*matriz, cantfilas, cantfilas) != 0)
     {
 
         for (int i = 0; i < cantfilas; i++)
