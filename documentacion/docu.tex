@@ -463,7 +463,28 @@ if (matriz[i][j] == NULL)
 \hfill
 \hfill
 \break
-
+Se puede apreciar el código anterior como es el proceso de asignar una página de memoria para un proceso, y que además se hace la comprobación de si ya el proceso está completamente en memoria para así liberar la cola de procesos, así en la salida de Latex se puede apreciar como se llenan las páginas de la memoria, y como en instantes de la simulación algunos procesos tardan más que otros en entrar en memoria.\\\\
+Además de ingresar procesos en memoria también se les debe de retirar de la memoria los procesos que cumplan un tiempo en ella.\\
+\begin{verbatim}
+...
+else
+                    {
+                        matriz[i][j]->duracion -= 1;
+                        if (matriz[i][j]->duracion == 0)
+                        {
+                            free(matriz[i][j]);
+                            matriz[i][j] = NULL;
+                        }
+                    }
+...
+\end{verbatim} 
+\hfill
+\hfill
+\break
+La seccion de código anterior es la utilizada para liberar las "páginas" de la memoria de los procesos que ya cumplian con la condición de que su duración fuera igual a cero, en la parte de liberar las páginas se consideró al inicio uitlizar páginas "fantasma" lo que haría que al final se deba de hacer un método solo para liberar la memoria de la matriz ya que se utlizó malloc para asignar a cada página, ademas de que igualar a NULL nos es útil a la hora de avanzar en los instantes de la simulación. 
+\hfill
+\hfill
+\break
 \subsection{Impresión en el archivo LaTeX}
 Para la impresión en el archivo laTeX se utilizaron tres funciónes:
 \begin{itemize}
@@ -555,16 +576,44 @@ fputs(msg,tex);
 }
 \end{verbatim}
 \section{Problemas encontrados}
-El primer problema encontrado fue el no poder generar los procesos de acuerdo a la distribución de Poisson. No podíamos avanzar en el proyecto dado que sin los procesos generados no se podía simular nada.
+El primer problema encontrado fue el no poder generar los procesos de acuerdo a la distribución de Poisson. No podíamos avanzar en el proyecto dado que sin los procesos generados no se podía simular nada.\\
+Todo esto porque solo calculabamos la probabilidad para el lambda que ingresaba por argumentos de la consola, y no teniamos la noción de la tabla acumulada.\\\\
+El siguiente código es lo que teníamos para la distribución de Poisson:\\
+\begin{verbatim}
+int kfactorial(int n){
+    int fac=1;
+    for(int i=n; i>0; i--){
+    fac= fac*i;
+    }
+    return fac; 
+}
+double calculapoisson(int lambda, int k){
+    double power= pow(M_E,(-lambda));
+    double x= pow(lambda, k);
+    int factk= kfactorial(k);
+    double result=(power*x)/factk;
+    return result;
+\end{verbatim}
 Gracias a que el profesor hizo un ejemplo de cómo implementar la distribución de Poisson, pudimos avanzar en ese aspecto.\\
-Otro de los principales problemas fue la sincronización entre la unidad de tiempo, la hora de llegada y el tiempo de ejecución del procesador.
-Al principio no sabíamos como indicarle al procesador para que no hiciera todo el proceso de un solo, sino que `simulara' esas unidades de tiempo. Eso lo resolvimos con un número contador.
-Resuelto esa parte del problema, teníamos que idear una forma en que conforme esa unidad de tiempo fuera aumentando en el método donde teníamos ese contador, fuera disminuyendo la duración de los procesos en memoria. Este problema lo resolvimos con la función `restaDuracion()' explicada anteriormente.\\
+Otro de los principales problemas fue la sincronización entre la unidad de tiempo, la hora de llegada y el tiempo de ejecución del procesador, ya que pensabamos que sumando la duración de todos los procesos podíamos calcular el tiempo total de los mismos en memoria, pero dejamos de lado las horas de llegada que hacian que el tiempo total variara con respecto al calculo previamente hecho.\\
+Al principio no sabíamos como indicarle al calendarizador para que no hiciera todo el proceso de un solo, sino que "simulara" esas unidades de tiempo. Eso lo resolvimos con un número contador, y los instantes se simularon con la ayuda de las estructuras de datos de apoyo con las cuales se definió que cada unidad de tiempo era un ciclo en el que se verificaba que las estructuras de datos auxiliares no estuvieran vacías.
+Resuelto esa parte del problema, teníamos que idear una forma en que conforme esa unidad de tiempo fuera aumentando en el método donde teníamos ese contador, fuera disminuyendo la duración de los procesos en memoria. Este problema lo resolvimos con la función "restaDuracion()" explicada anteriormente.\\
 Otro de los problemas que frecuentemenete
 tuvimos fueron los segmentation faults. Esto muchas veces ocurría puesto que estábamos utilizando lista enlazadas que en el fondo son punteros. Cuando se utilizaba un puntero qué no había sido asignado o estaba apuntando a NULL, ahí era donde se producía el segmentation fault.
+Un problema recurrente en la simulación de paginación fue que la simulación terminaba sin que la memoria se limpiara del todo, esto se solucionó cambiando el ciclo principal de instantes y se modificó con condiciones previas al ciclo para que terminara de forma exitosa.\\ 
+Al principio en paginación se tenía el enfoque de que siempre la estructura de datos para simular la memoria o sea la matriz, sería una cuadrada, misma cantidad de filas y columnas, pero esto era un enfoque erróneo ya que dados distintos números en el archivo de configuración la matriz resultante de eso no sería una matriz cuadrada, así que rápidamente, se hizo un método que factoriza la cantidad de páginas, esto para encontrar los dos factores de este con la diferencia más pequeña entre los dos.\\
 \section{Conclusiones}
+\hfill
+\hfill
+\break
 \begin{itemize}
-\item 22
+\item Se concluye que conforme a lo visto en las simulaciones que los instantes iniciales en todos los modos de sucuencial, son similares, pero que al momento de avanzar instantes, la simulación varia de forma de que se puede notar la características de cada uno de los algoritmos en secuencial.\\
+\item Con respecto a paginación y secuencial se puede ver como en paginación al tener la posibilidad de calendarizar en una forma aleatoria en las páginas puede en menor cantidad de instantes calendarizar la misma cantidad de procesos que todos los "modos" de trabajo de la memoria secuencial.\\
+\item La implementacion de secuencial es más complicada en cuestión de la simulación ya que la estructura de datos utilizada para simular la memoria es una lista enlazada a la cual se le deben de añadir operaciones para que esta maneje los espacios vacíos en ella.\\
+\item Se puede concluir que en el modo secuencial, Best fit y Worst fit consumen más tiempo de procesador que FIFO, dado que en los dos algoritmos anteriores se hace una búsqueda del bloque deseado (ya sea de mayor o de menor tamaño).
+\item También se puede observar que Best Fit y Worst Fit hacen mejor manejo del espacio de la memoria que FIFO. Sin embargo, se puede observar que Best Fit acomoda mejor el espacio que Worst Fit ya que el primer algoritmo busca el bloque con el espacio justo del proceso a insertar en memoria, mientras que Worst Fit busca el bloque más grande lo que hace que pueda desperdiciar espacio en memoria.\\
+\item Se concluye que el manejo de calendarización de los procesos es importante para manejar una mayor multiprogramación, 
+esto importante a nivel de sistemas operativos.
 \end{itemize}
 \end{document}
 \end{document}

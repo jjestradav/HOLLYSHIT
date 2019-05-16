@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.21)  12 MAY 2019 19:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.21)  16 MAY 2019 10:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -662,39 +662,88 @@ Underfull \hbox (badness 10000) in paragraph at lines 419--426
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 463--466
+Underfull \hbox (badness 10000) in paragraph at lines 463--468
 
  []
 
 
-Overfull \hbox (156.79755pt too wide) in paragraph at lines 476--476
+Underfull \hbox (badness 10000) in paragraph at lines 463--468
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 481--488
+
+ []
+
+
+Overfull \hbox (156.79755pt too wide) in paragraph at lines 497--497
 []  \OT1/cmtt/m/n/10 fputs("\\documentclass[10pt,a4paper]{article}\n\\usepackag
 e[utf8]{inputenc}\n\\begin{document}\n\\begin{center}\n",tex); 
  []
 
 
-Overfull \hbox (41.29855pt too wide) in paragraph at lines 478--478
+Overfull \hbox (41.29855pt too wide) in paragraph at lines 499--499
 []\OT1/cmtt/m/n/10 fprintf(tex,"\\section*{Configuracion}\n\\begin{description}
 \n\\item[Algoritmo:] %s \n", algoritmo);[] 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 482.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 503.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 482.
- [10] [11] [12]
-(./docu.aux
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 503.
+ [10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 579--582
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 579--582
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 597--605
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 606--609
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 610--611
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 611--612
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 612--613
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 614--615
+
+ []
+
+[13] (./docu.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 2519 strings out of 494820
- 32687 string characters out of 6177789
+ 2520 strings out of 494820
+ 32702 string characters out of 6177789
  100681 words of memory out of 5000000
- 5859 multiletter control sequences out of 15000+600000
+ 5860 multiletter control sequences out of 15000+600000
  5326 words of font info for 20 fonts, out of 8000000 for 9000
  62 hyphenation exceptions out of 8191
  27i,4n,30p,700b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -709,10 +758,10 @@ public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 tt10.pfb>
-Output written on docu.pdf (13 pages, 156121 bytes).
+Output written on docu.pdf (14 pages, 160897 bytes).
 PDF statistics:
- 91 PDF objects out of 1000 (max. 8388607)
- 64 compressed objects within 1 object stream
+ 94 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
