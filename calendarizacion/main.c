@@ -16,7 +16,7 @@ int main()
     p *head = NULL;
     bloque* blo=NULL;
     FILE *fp;
-    char *filename = "../file.txt";
+    char *filename = "../generador/file.txt";
     read_gen(fp, filename, &head);
     FILE *f;
     FILE * tex;
